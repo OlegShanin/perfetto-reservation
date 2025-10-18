@@ -1,5 +1,6 @@
 // ReservationModal Component Styles - BEM Methodology
 .reservation-modal {
+
   // Error Alert Styles
   &__error {
     background-color: #f8d7da;
@@ -8,7 +9,7 @@
     border-radius: 8px;
     margin-bottom: 1.5rem;
     padding: 0.75rem 1rem;
-    
+
     .fas {
       color: #dc3545;
     }
@@ -49,7 +50,7 @@
       font-family: 'Courier New', monospace;
       letter-spacing: 1px;
     }
-    
+
     &__note {
       color: var(--perfetto-gray);
       font-style: italic;

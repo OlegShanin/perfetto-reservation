@@ -58,7 +58,7 @@ const ReservationModal = ({ show, onHide }) => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -66,7 +66,7 @@ const ReservationModal = ({ show, onHide }) => {
         [name]: ''
       }));
     }
-    
+
     // Clear API error when user makes changes
     if (apiError) {
       setApiError('');
@@ -75,7 +75,7 @@ const ReservationModal = ({ show, onHide }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Validate first name
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'Vorname ist erforderlich';
@@ -84,7 +84,7 @@ const ReservationModal = ({ show, onHide }) => {
     } else if (!/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(formData.firstName.trim())) {
       newErrors.firstName = 'Vorname darf nur Buchstaben, Leerzeichen und Bindestriche enthalten';
     }
-    
+
     // Validate last name
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Nachname ist erforderlich';
@@ -93,7 +93,7 @@ const ReservationModal = ({ show, onHide }) => {
     } else if (!/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(formData.lastName.trim())) {
       newErrors.lastName = 'Nachname darf nur Buchstaben, Leerzeichen und Bindestriche enthalten';
     }
-    
+
     // Validate date
     if (!formData.date) {
       newErrors.date = 'Datum ist erforderlich';
@@ -102,29 +102,29 @@ const ReservationModal = ({ show, onHide }) => {
       const today = new Date();
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
-      
+
       const maxDate = new Date(today);
       maxDate.setMonth(maxDate.getMonth() + 1);
-      
+
       if (selectedDate < tomorrow) {
         newErrors.date = 'Reservierungen sind erst ab morgen möglich';
       } else if (selectedDate > maxDate) {
         newErrors.date = 'Reservierungen sind nur bis zu einem Monat im Voraus möglich';
       }
     }
-    
+
     // Validate guests
     if (!formData.guests || formData.guests < 1 || formData.guests > 20) {
       newErrors.guests = 'Anzahl der Gäste muss zwischen 1 und 20 liegen';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -225,7 +225,7 @@ const ReservationModal = ({ show, onHide }) => {
               {apiError}
             </Alert>
           )}
-          
+
           <div className="form-perfetto">
             <div className="row">
               <div className="col-md-6 mb-3">

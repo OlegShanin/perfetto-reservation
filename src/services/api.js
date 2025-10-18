@@ -60,7 +60,7 @@ export const createReservation = async (reservationData) => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     const maxDate = new Date(today);
     maxDate.setMonth(maxDate.getMonth() + 1);
 
@@ -86,7 +86,7 @@ export const createReservation = async (reservationData) => {
 
     // Simulate successful reservation
     const reservationId = `RES-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const confirmation = {
       id: reservationId,
       firstName: firstName.trim(),
@@ -102,10 +102,10 @@ export const createReservation = async (reservationData) => {
 
   } catch (error) {
     // Re-throw validation errors
-    if (error.message.includes('Invalid') || 
-        error.message.includes('required') || 
-        error.message.includes('must be') ||
-        error.message.includes('cannot be')) {
+    if (error.message.includes('Invalid') ||
+      error.message.includes('required') ||
+      error.message.includes('must be') ||
+      error.message.includes('cannot be')) {
       throw error;
     }
 
@@ -126,13 +126,13 @@ export const checkAvailability = async (date) => {
 
     // Simulate availability check
     const isAvailable = Math.random() > 0.1; // 90% chance of availability
-    
+
     return {
       date: date,
       available: isAvailable,
       maxGuests: isAvailable ? 20 : 0,
-      message: isAvailable 
-        ? 'Tische verfügbar' 
+      message: isAvailable
+        ? 'Tische verfügbar'
         : 'Leider keine Verfügbarkeit für dieses Datum'
     };
 

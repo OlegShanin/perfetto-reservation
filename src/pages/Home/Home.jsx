@@ -19,7 +19,7 @@ const Home = () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const tomorrowString = tomorrow.toISOString().split('T')[0];
-      
+
       setIsCheckingAvailability(true);
       try {
         const availability = await checkAvailability(tomorrowString);
@@ -49,7 +49,7 @@ const Home = () => {
   return (
     <div className="home">
       <Header />
-      
+
       <main className="home__main">
         <section className="hero" id="home">
           <div className="container">
@@ -58,18 +58,18 @@ const Home = () => {
                 Willkommen bei Perfetto Caffè
               </h1>
               <p className="hero__subtitle">
-                Genießen Sie die authentische italienische Küche in gemütlicher Atmosphäre. 
+                Genießen Sie die authentische italienische Küche in gemütlicher Atmosphäre.
                 Reservieren Sie Ihren Tisch und erleben Sie unvergessliche Momente bei uns.
               </p>
               <div className="hero__button">
-                <button 
+                <button
                   className="btn btn-perfetto btn-lg"
                   onClick={handleOpenReservationModal}
                   type="button"
                 >
                   Tisch reservieren
                 </button>
-                
+
                 {availabilityMessage && (
                   <div className="hero__availability">
                     <p className={`hero__availability-message ${availabilityMessage.includes('verfügbar') ? 'hero__availability-message--available' : 'hero__availability-message--unavailable'}`}>
@@ -82,7 +82,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-        
+
         <section className="home__features">
           <div className="container">
             <div className="row">
@@ -97,7 +97,7 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="col-lg-4 col-md-6 mb-4">
                 <div className="feature-card">
                   <div className="feature-card__icon">
@@ -109,7 +109,7 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-              
+
               <div className="col-lg-4 col-md-6 mb-4">
                 <div className="feature-card">
                   <div className="feature-card__icon">
@@ -125,8 +125,8 @@ const Home = () => {
           </div>
         </section>
       </main>
-      
-      <ReservationModal 
+
+      <ReservationModal
         show={showReservationModal}
         onHide={handleCloseReservationModal}
       />
