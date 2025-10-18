@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert, Spinner } from 'react-bootstrap';
+import { createReservation } from '../../services/api';
 import './ReservationModal.scss';
 
 /**
@@ -16,6 +17,9 @@ const ReservationModal = ({ show, onHide }) => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [reservationData, setReservationData] = useState(null);
   const [minDate, setMinDate] = useState('');
   const [maxDate, setMaxDate] = useState('');
 
@@ -42,6 +46,9 @@ const ReservationModal = ({ show, onHide }) => {
       });
       setErrors({});
       setIsSubmitted(false);
+      setIsLoading(false);
+      setApiError('');
+      setReservationData(null);
     }
   }, [show]);
 
@@ -51,7 +58,7 @@ const ReservationModal = ({ show, onHide }) => {
       ...prev,
       [name]: value
     }));
-
+    
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -59,44 +66,96 @@ const ReservationModal = ({ show, onHide }) => {
         [name]: ''
       }));
     }
+    
+    // Clear API error when user makes changes
+    if (apiError) {
+      setApiError('');
+    }
   };
 
   const validateForm = () => {
     const newErrors = {};
-
+    
+    // Validate first name
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'Vorname ist erforderlich';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'Vorname muss mindestens 2 Zeichen lang sein';
+    } else if (!/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(formData.firstName.trim())) {
+      newErrors.firstName = 'Vorname darf nur Buchstaben, Leerzeichen und Bindestriche enthalten';
     }
-
+    
+    // Validate last name
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Nachname ist erforderlich';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'Nachname muss mindestens 2 Zeichen lang sein';
+    } else if (!/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(formData.lastName.trim())) {
+      newErrors.lastName = 'Nachname darf nur Buchstaben, Leerzeichen und Bindestriche enthalten';
     }
-
+    
+    // Validate date
     if (!formData.date) {
       newErrors.date = 'Datum ist erforderlich';
+    } else {
+      const selectedDate = new Date(formData.date);
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      
+      const maxDate = new Date(today);
+      maxDate.setMonth(maxDate.getMonth() + 1);
+      
+      if (selectedDate < tomorrow) {
+        newErrors.date = 'Reservierungen sind erst ab morgen möglich';
+      } else if (selectedDate > maxDate) {
+        newErrors.date = 'Reservierungen sind nur bis zu einem Monat im Voraus möglich';
+      }
     }
-
-    if (formData.guests < 1 || formData.guests > 20) {
+    
+    // Validate guests
+    if (!formData.guests || formData.guests < 1 || formData.guests > 20) {
       newErrors.guests = 'Anzahl der Gäste muss zwischen 1 und 20 liegen';
     }
-
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
 
-    if (validateForm()) {
-      // Simulate API call
-      setTimeout(() => {
-        setIsSubmitted(true);
-      }, 1000);
+    setIsLoading(true);
+    setApiError('');
+
+    try {
+      const reservationData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        date: formData.date,
+        guests: parseInt(formData.guests)
+      };
+
+      const result = await createReservation(reservationData);
+      setReservationData(result);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Reservation error:', error);
+      setApiError(error.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleClose = () => {
     setIsSubmitted(false);
+    setIsLoading(false);
+    setApiError('');
+    setReservationData(null);
     onHide();
   };
 
@@ -120,10 +179,15 @@ const ReservationModal = ({ show, onHide }) => {
               Vielen Dank für Ihre Reservierung!
             </h4>
             <p className="success-message__text">
-              Ihre Tischreservierung für <strong>{formData.guests} {formData.guests === 1 ? 'Person' : 'Personen'}</strong>
-              am <strong>{new Date(formData.date).toLocaleDateString('de-DE')}</strong>
-              unter dem Namen <strong>{formData.firstName} {formData.lastName}</strong> wurde erfolgreich erstellt.
+              Ihre Tischreservierung für <strong>{reservationData?.guests} {reservationData?.guests === 1 ? 'Person' : 'Personen'}</strong>
+              am <strong>{reservationData?.date ? new Date(reservationData.date).toLocaleDateString('de-DE') : ''}</strong>
+              unter dem Namen <strong>{reservationData?.firstName} {reservationData?.lastName}</strong> wurde erfolgreich erstellt.
             </p>
+            {reservationData?.confirmationCode && (
+              <p className="success-message__code">
+                <strong>Bestätigungscode: {reservationData.confirmationCode}</strong>
+              </p>
+            )}
             <p className="success-message__note">
               Sie erhalten in Kürze eine Bestätigungs-E-Mail.
             </p>
@@ -155,6 +219,13 @@ const ReservationModal = ({ show, onHide }) => {
 
       <form onSubmit={handleSubmit}>
         <Modal.Body>
+          {apiError && (
+            <Alert variant="danger" className="reservation-modal__error">
+              <i className="fas fa-exclamation-triangle me-2"></i>
+              {apiError}
+            </Alert>
+          )}
+          
           <div className="form-perfetto">
             <div className="row">
               <div className="col-md-6 mb-3">
@@ -255,6 +326,7 @@ const ReservationModal = ({ show, onHide }) => {
             variant="outline-secondary"
             onClick={onHide}
             className="btn-perfetto-outline"
+            disabled={isLoading}
           >
             Abbrechen
           </Button>
@@ -262,8 +334,23 @@ const ReservationModal = ({ show, onHide }) => {
             type="submit"
             variant="perfetto"
             className="btn-perfetto"
+            disabled={isLoading}
           >
-            Reservierung bestätigen
+            {isLoading ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  className="me-2"
+                />
+                Wird verarbeitet...
+              </>
+            ) : (
+              'Reservierung bestätigen'
+            )}
           </Button>
         </Modal.Footer>
       </form>

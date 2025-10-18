@@ -218,6 +218,36 @@ body {
   &__button {
     margin-top: 1rem;
   }
+  
+  &__availability {
+    margin-top: 1.5rem;
+    
+    &-message {
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 500;
+      
+      &--available {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+      }
+      
+      &--unavailable {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #856404;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+      }
+      
+      .fas {
+        font-size: 1.1rem;
+      }
+    }
+  }
 }
 
 // Responsive Design

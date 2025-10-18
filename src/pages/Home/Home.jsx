@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import ReservationModal from '../../components/ReservationModal/ReservationModal';
+import { checkAvailability } from '../../services/api';
 import './Home.scss';
 
 /**
@@ -9,6 +10,33 @@ import './Home.scss';
  */
 const Home = () => {
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [availabilityMessage, setAvailabilityMessage] = useState('');
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+
+  // Check availability for tomorrow when component mounts
+  useEffect(() => {
+    const checkTomorrowAvailability = async () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowString = tomorrow.toISOString().split('T')[0];
+      
+      setIsCheckingAvailability(true);
+      try {
+        const availability = await checkAvailability(tomorrowString);
+        if (availability.available) {
+          setAvailabilityMessage('Tische verfügbar für morgen!');
+        } else {
+          setAvailabilityMessage('Heute keine Verfügbarkeiten für morgen');
+        }
+      } catch (error) {
+        setAvailabilityMessage('Verfügbarkeitsprüfung nicht möglich');
+      } finally {
+        setIsCheckingAvailability(false);
+      }
+    };
+
+    checkTomorrowAvailability();
+  }, []);
 
   const handleOpenReservationModal = () => {
     setShowReservationModal(true);
@@ -41,6 +69,15 @@ const Home = () => {
                 >
                   Tisch reservieren
                 </button>
+                
+                {availabilityMessage && (
+                  <div className="hero__availability">
+                    <p className={`hero__availability-message ${availabilityMessage.includes('verfügbar') ? 'hero__availability-message--available' : 'hero__availability-message--unavailable'}`}>
+                      <i className={`fas ${availabilityMessage.includes('verfügbar') ? 'fa-check-circle' : 'fa-info-circle'} me-2`}></i>
+                      {isCheckingAvailability ? 'Prüfe Verfügbarkeit...' : availabilityMessage}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
