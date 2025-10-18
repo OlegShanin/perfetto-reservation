@@ -1,0 +1,117 @@
+// ReservationModal Component Styles - BEM Methodology
+.reservation-modal {
+
+  // Success Message Styles
+  .success-message {
+    padding: 2rem 0;
+
+    &__icon {
+      font-size: 4rem;
+      color: var(--perfetto-coffee);
+      margin-bottom: 1.5rem;
+      animation: checkmark 0.6s ease-in-out;
+    }
+
+    &__title {
+      font-family: var(--font-primary);
+      color: var(--perfetto-dark-coffee);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    &__text {
+      color: var(--perfetto-coffee);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    &__note {
+      color: var(--perfetto-gray);
+      font-style: italic;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  }
+
+  // Form specific styles
+  .form-perfetto {
+    .form-control {
+      &.is-invalid {
+        border-color: #dc3545;
+
+        &:focus {
+          border-color: #dc3545;
+          box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+      }
+    }
+
+    .invalid-feedback {
+      display: block;
+      font-size: 0.875rem;
+      color: #dc3545;
+      margin-top: 0.25rem;
+    }
+
+    .form-text {
+      font-size: 0.8rem;
+      color: var(--perfetto-gray);
+      margin-top: 0.5rem;
+    }
+  }
+
+  // Modal footer button spacing
+  .modal-footer {
+    .btn {
+      margin-left: 0.5rem;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+// Animation for success checkmark
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .reservation-modal {
+    .success-message {
+      padding: 1.5rem 0;
+
+      &__icon {
+        font-size: 3rem;
+      }
+
+      &__title {
+        font-size: 1.25rem;
+      }
+    }
+
+    .modal-footer {
+      flex-direction: column;
+
+      .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+// Home Page Styles - BEM Methodology
+.home {
+  &__main {
+    min-height: 100vh;
+  }
+
+  &__features {
+    padding: 4rem 0;
+    background-color: var(--perfetto-white);
+  }
+}
+
+// Feature Cards
+.feature-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background-color: var(--perfetto-cream);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--perfetto-coffee), var(--perfetto-gold));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--perfetto-white);
+    font-size: 2rem;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+  }
+
+  &__title {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--perfetto-dark-coffee);
+    margin-bottom: 1rem;
+  }
+
+  &__description {
+    color: var(--perfetto-coffee);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .home {
+    &__features {
+      padding: 3rem 0;
+    }
+  }
+
+  .feature-card {
+    padding: 1.5rem 1rem;
+
+    &__icon {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+
+    &__title {
+      font-size: 1.25rem;
+    }
+  }
+}

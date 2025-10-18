@@ -1,0 +1,248 @@
+// Import Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// Import Font Awesome
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+// Import Google Fonts for elegant typography
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap');
+
+// Perfetto Caffè Color Palette
+:root {
+  // Warm beige and coffee tones
+  --perfetto-cream: #f5f1e8;
+  --perfetto-beige: #e8dcc0;
+  --perfetto-coffee: #8b4513;
+  --perfetto-dark-coffee: #5d2f0a;
+  --perfetto-gold: #d4af37;
+  --perfetto-light-gold: #f4e4bc;
+  --perfetto-white: #ffffff;
+  --perfetto-gray: #6c757d;
+  --perfetto-dark-gray: #343a40;
+
+  // Typography
+  --font-primary: 'Playfair Display', serif;
+  --font-secondary: 'Source Sans Pro', sans-serif;
+}
+
+// Global Styles
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background-color: var(--perfetto-cream);
+  color: var(--perfetto-dark-coffee);
+  line-height: 1.6;
+}
+
+// BEM Methodology Base Classes
+.block {
+  &__element {
+    // Element styles
+  }
+
+  &--modifier {
+    // Modifier styles
+  }
+}
+
+// Utility Classes
+.text-perfetto {
+  color: var(--perfetto-coffee);
+}
+
+.bg-perfetto {
+  background-color: var(--perfetto-cream);
+}
+
+.bg-perfetto-beige {
+  background-color: var(--perfetto-beige);
+}
+
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+// Button Styles
+.btn-perfetto {
+  background-color: var(--perfetto-coffee);
+  border-color: var(--perfetto-coffee);
+  color: var(--perfetto-white);
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  padding: 12px 30px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--perfetto-dark-coffee);
+    border-color: var(--perfetto-dark-coffee);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.25);
+  }
+}
+
+.btn-perfetto-outline {
+  background-color: transparent;
+  border: 2px solid var(--perfetto-coffee);
+  color: var(--perfetto-coffee);
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  padding: 10px 28px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--perfetto-coffee);
+    color: var(--perfetto-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+  }
+}
+
+// Form Styles
+.form-perfetto {
+  .form-control {
+    border: 2px solid var(--perfetto-beige);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: var(--font-secondary);
+    background-color: var(--perfetto-white);
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: var(--perfetto-coffee);
+      box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.15);
+      background-color: var(--perfetto-white);
+    }
+
+    &::placeholder {
+      color: var(--perfetto-gray);
+      font-style: italic;
+    }
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: var(--perfetto-dark-coffee);
+    margin-bottom: 8px;
+  }
+}
+
+// Modal Styles
+.modal-perfetto {
+  .modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-header {
+    background-color: var(--perfetto-beige);
+    border-bottom: 2px solid var(--perfetto-coffee);
+    border-radius: 15px 15px 0 0;
+
+    .modal-title {
+      font-family: var(--font-primary);
+      font-weight: 600;
+      color: var(--perfetto-dark-coffee);
+    }
+  }
+
+  .modal-body {
+    background-color: var(--perfetto-white);
+    padding: 2rem;
+  }
+
+  .modal-footer {
+    background-color: var(--perfetto-cream);
+    border-top: 1px solid var(--perfetto-beige);
+    border-radius: 0 0 15px 15px;
+  }
+}
+
+// Hero Section Styles
+.hero {
+  background: linear-gradient(135deg, var(--perfetto-cream) 0%, var(--perfetto-beige) 100%);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23d4af37" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  &__title {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--perfetto-dark-coffee);
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &__subtitle {
+    font-family: var(--font-secondary);
+    font-size: 1.25rem;
+    color: var(--perfetto-coffee);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__button {
+    margin-top: 1rem;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .hero {
+    min-height: 50vh;
+
+    &__title {
+      font-size: 2.5rem;
+    }
+
+    &__subtitle {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    &__title {
+      font-size: 2rem;
+    }
+
+    &__subtitle {
+      font-size: 1rem;
+    }
+  }
+}
